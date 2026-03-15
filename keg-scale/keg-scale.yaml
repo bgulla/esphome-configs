@@ -1,0 +1,59 @@
+sensor:
+  - platform: hx711
+    name: "Keg Weight"
+    id: keg_weight
+    dout_pin: D2
+    clk_pin: D3
+    gain: 128
+    update_interval: 5s
+    unit_of_measurement: "lbs"
+    accuracy_decimals: 2
+    filters:
+      - calibrate_linear:
+          - 260160 -> 0
+          - 283944 -> 2.205
+      - sliding_window_moving_average:
+          window_size: 5
+          send_every: 5
+      - lambda: if (x < 0.5) return 0; else return x;
+
+  - platform: template
+    name: "Keg Beer Weight"
+    unit_of_measurement: "lbs"
+    accuracy_decimals: 2
+    lambda: |-
+      float tare = 9.5;
+      float beer = id(keg_weight).state - tare;
+      if (beer < 0) return 0;
+      return beer;
+
+  - platform: template
+    name: "Keg Gallons Remaining"
+    unit_of_measurement: "gal"
+    accuracy_decimals: 2
+    lambda: |-
+      float tare = 9.5;
+      float beer = id(keg_weight).state - tare;
+      if (beer < 0) return 0;
+      return beer / 8.34;
+
+  - platform: template
+    name: "Keg Pints Remaining"
+    unit_of_measurement: "pints"
+    accuracy_decimals: 0
+    lambda: |-
+      float tare = 9.5;
+      float beer = id(keg_weight).state - tare;
+      if (beer < 0) return 0;
+      return (beer / 8.34) * 8;
+
+  - platform: template
+    name: "Keg Percent Full"
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    lambda: |-
+      float tare = 9.5;
+      float full_beer = 41.7;
+      float beer = id(keg_weight).state - tare;
+      if (beer < 0) return 0;
+      return (beer / full_beer) * 100;
