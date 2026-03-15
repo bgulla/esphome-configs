@@ -18,6 +18,7 @@ ESPHome device configurations managed in version control. Each device has its ow
 | [keg-scale](keg-scale/) | NodeMCU v2 (ESP8266) | HX711 kegerator scale with pour tracking |
 | [mmwave-study](mmwave-study/) | ESP32-C3 DevKitM-1 | HLK-LD2410 mmwave presence sensor + BT proxy, study room |
 | [wt32-eth01](wt32-eth01/) | WT32-ETH01 (ESP32) | Wired Ethernet Bluetooth proxy |
+| [button-box](button-box/) | ESP32-C3 DevKitM-1 | 4-button HA scene controller with OLED display |
 
 ## Usage
 

@@ -1,0 +1,116 @@
+i2c:
+  sda: GPIO5
+  scl: GPIO6
+
+font:
+  - file: "gfonts://Roboto"
+    id: font1
+    size: 16
+
+display:
+  - platform: ssd1306_i2c
+    model: "SH1106 128x64"
+    address: 0x3C
+    id: oled_display
+    rotation: 180
+    update_interval: 1s
+    pages:
+      - id: page_main
+        lambda: |-
+          it.print(6, -2, id(font1), "1: Office");
+          it.print(6, 12, id(font1), "2: Garage");
+          it.print(6, 26, id(font1), "3: Party Mode");
+          it.print(6, 40, id(font1), "4: BOOYA");
+
+      - id: page1
+        lambda: |-
+          it.print(0, 0, id(font1), "Scene 1 triggered");
+
+      - id: page2
+        lambda: |-
+          it.print(0, 0, id(font1), "Scene 2 triggered");
+
+      - id: page3
+        lambda: |-
+          it.print(0, 0, id(font1), "Scene 3 triggered");
+
+      - id: page4
+        lambda: |-
+          it.print(0, 0, id(font1), "Scene 4 triggered");
+
+binary_sensor:
+  # Purple wire → GPIO2 → Button 2
+  - platform: gpio
+    pin:
+      number: GPIO2
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Keypad Button 2"
+    internal: true
+    on_press:
+      then:
+        - logger.log: "Scene 2 activated"
+        - homeassistant.service:
+            service: scene.turn_on
+            data:
+              entity_id: scene.scene_2
+        - display.page.show: page2
+        - delay: 5s
+        - display.page.show: page_main
+
+  # Gray wire → GPIO4 → Button 1
+  - platform: gpio
+    pin:
+      number: GPIO4
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Keypad Button 1"
+    internal: true
+    on_press:
+      then:
+        - logger.log: "Scene 1 activated"
+        - homeassistant.service:
+            service: scene.turn_on
+            data:
+              entity_id: scene.scene_1
+        - display.page.show: page1
+        - delay: 5s
+        - display.page.show: page_main
+
+  # White wire → GPIO3 → Button 4
+  - platform: gpio
+    pin:
+      number: GPIO3
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Keypad Button 4"
+    internal: true
+    on_press:
+      then:
+        - logger.log: "Scene 4 activated"
+        - homeassistant.service:
+            service: scene.turn_on
+            data:
+              entity_id: scene.scene_4
+        - display.page.show: page4
+        - delay: 5s
+        - display.page.show: page_main
+
+  # Black wire → GPIO10 → Button 3
+  - platform: gpio
+    pin:
+      number: GPIO10
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Keypad Button 3"
+    internal: true
+    on_press:
+      then:
+        - logger.log: "Scene 3 activated"
+        - homeassistant.service:
+            service: scene.turn_on
+            data:
+              entity_id: scene.scene_3
+        - display.page.show: page3
+        - delay: 5s
+        - display.page.show: page_main
