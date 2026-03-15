@@ -16,6 +16,7 @@ ESPHome device configurations managed in version control. Each device has its ow
 | Device | Board | Description |
 |---|---|---|
 | [keg-scale](keg-scale/) | NodeMCU v2 (ESP8266) | HX711 kegerator scale with pour tracking |
+| [mm-wave](mm-wave/) | ESP32-C3 DevKitM-1 | mmwave presence sensor platform with OLED display |
 
 ## Usage
 

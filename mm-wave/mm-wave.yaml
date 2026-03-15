@@ -1,0 +1,90 @@
+i2c:
+  sda: GPIO5
+  scl: GPIO6
+  scan: true
+
+font:
+  - file: "gfonts://Roboto"
+    id: roboto_16
+    size: 16
+  - file: "gfonts://Roboto"
+    id: roboto_12
+    size: 12
+
+display:
+  - platform: ssd1306_i2c
+    model: "SH1106 128x64"
+    address: 0x3C
+    update_interval: 1s
+    lambda: |-
+      it.printf(0, 0, id(roboto_16), "Hello!");
+      it.printf(0, 20, id(roboto_12), "IP: %s", id(wifi_ip).state.c_str());
+      it.printf(0, 40, id(roboto_12), "Uptime: %.0fs", id(uptime_sensor).state);
+
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    id: uptime_sensor
+
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 60s
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "IP Address"
+      id: wifi_ip
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO1
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Button 2"
+    on_press:
+      - logger.log: "Button 2 pressed"
+    on_release:
+      - logger.log: "Button 2 released"
+
+  - platform: gpio
+    pin:
+      number: GPIO4
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Button 1"
+    on_press:
+      - logger.log: "Button 1 pressed"
+    on_release:
+      - logger.log: "Button 1 released"
+
+  - platform: gpio
+    pin:
+      number: GPIO3
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Button 4"
+    on_press:
+      - logger.log: "Button 4 pressed"
+    on_release:
+      - logger.log: "Button 4 released"
+
+  - platform: gpio
+    pin:
+      number: GPIO10
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Button 3"
+    on_press:
+      - logger.log: "Button 3 pressed"
+    on_release:
+      - logger.log: "Button 3 released"
