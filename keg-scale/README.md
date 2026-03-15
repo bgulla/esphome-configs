@@ -1,6 +1,8 @@
 # keg-scale
 
-NodeMCU v2 (ESP8266) with an HX711 load cell amplifier. Weighs a kegerator keg and exposes derived sensors to Home Assistant for live pour tracking.
+> I homebrew sparkling water. These kegs are 5-gallon Cornelius kegs left over from my brewing days, now repurposed with a CO2 tank to carbonate water at home. No beer involved.
+
+NodeMCU v2 (ESP8266) with an HX711 load cell amplifier. Weighs a carbonated water keg and exposes derived sensors to Home Assistant for tracking remaining volume.
 
 ## Hardware
 
@@ -14,7 +16,7 @@ NodeMCU v2 (ESP8266) with an HX711 load cell amplifier. Weighs a kegerator keg a
 | Entity | Unit | Description |
 |---|---|---|
 | `sensor.keg_scale_keg_weight` | lbs | Raw HX711 reading, calibrated |
-| `sensor.keg_scale_keg_beer_weight` | lbs | Raw weight minus 9.5 lb keg tare |
+| `sensor.keg_scale_keg_water_weight` | lbs | Raw weight minus 9.5 lb keg tare |
 | `sensor.keg_scale_keg_gallons_remaining` | gal | Beer weight ÷ 8.34 |
 | `sensor.keg_scale_keg_pints_remaining` | pints | Gallons × 8 |
 | `sensor.keg_scale_keg_percent_full` | % | Based on 41.7 lb full keg (5 gal cornelius) |
@@ -102,8 +104,8 @@ cards:
       - entity: sensor.keg_scale_keg_gallons_remaining
         name: Gallons
         icon: mdi:barrel
-      - entity: sensor.keg_scale_keg_beer_weight
-        name: Beer Weight
+      - entity: sensor.keg_scale_keg_water_weight
+        name: Water Weight
         icon: mdi:scale
   - type: custom:apexcharts-card
     header:
